@@ -2,15 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-# from .keras.models import load_model
+from tensorflow.keras.models import load_model
 
-# model = load_model('model.h5')
-# import pickle
-
-# # Load the pre-trained model
-# with open('model.pkl', 'rb') as file:
-#     model = pickle.load(file)
-
+model = load_model('best_model.h5')
 
 # Define the symptom inputs
 symptoms = [' continuous_sneezing', ' shivering', ' chills',
@@ -39,20 +33,12 @@ for i, symptom in enumerate(symptoms):
 
 # Convert user input to numpy array
 input_data = np.array([[int(user_symptoms[s]) for s in symptoms]])
-
-# User input for symptoms
-# user_symptoms = {}
-# for symptom in symptoms:
-#     user_symptoms[symptom] = st.checkbox(symptom)
-
-# # Convert user input to dataframe
-# input_data = pd.DataFrame([user_symptoms])
-
-print(input_data)
+diseases = ['Allergy','Arthritis','Bronchial Asthma','Common Cold','Diabetes ','Heart attack','Hypertension ','Hypothyroidism','Tuberculosis']
 # Prediction
 if st.button('Predict'):
-    # print(input_data)
-    # prediction = model.predict(input_data)
-    st.write(f'Predicted Disease: Bronchial Asthma')
+    prediction = model.predict(input_data)
+    predicted_index = np.argmax(prediction)
 
-    # {input_data}
+    predicted_disease = diseases[predicted_index]
+    
+    st.write(f'Predicted Disease: {predicted_disease}')
